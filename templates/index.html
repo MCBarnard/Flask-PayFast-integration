@@ -4,15 +4,33 @@
     Home
 {% endblock %}
 
+
 {% block content %}
-<form action="https://sandbox.payfast.co.za/eng/process" method="post">
-    <input name="item_name" type="hidden" value="test product">
-    <input name="m_payment_id" type="hidden" value="SuperUnique1">
-    <input name="merchant_id" type="hidden" value="10012577">
-    <input name="merchant_key" type="hidden" value="t7r1dki69y4p7">
-    <input name="notify_url" type="hidden" value="{{ app_url}}{{ url_for('receive_payment') }}">
-    <input name="return_url" type="hidden" value="{{ app_url}}/">
-    <input name="amount" type="hidden" value="200">
-    <input type="submit" value="Go">
-</form>
+    {% if purchase|length > 1 %}
+        <a href="/clear" class="btn btn-danger stretched-link">Clear the logs</a>
+    {% endif %}
+
+    {% for data in purchase %}
+        <p>{{ data }}</p>
+    {% endfor %}
+    <form action="https://sandbox.payfast.co.za/eng/process" method="post">
+        <input name="item_name" type="hidden" value="test product">
+        <input name="m_payment_id" type="hidden" value="SuperUnique1">
+        <input name="merchant_id" type="hidden" value="10012577">
+        <input name="merchant_key" type="hidden" value="t7r1dki69y4p7">
+        <input name="notify_url" type="hidden" value="{{ app_url}}{{ url_for('receive_payment') }}">
+        <input name="return_url" type="hidden" value="{{ app_url}}/">
+        <input name="amount" type="hidden" value="200">
+        <button type="submit" class="btn btn-danger">Pay Now</button>
+    </form>
+
+    {% if purchase|length > 1 %}
+
+    {% else %}
+        <br>
+        <blockquote class="blockquote">
+          <p class="mb-0">Better click pay now..</p>
+          <footer class="blockquote-footer">Someone famous @ <cite title="Source Title">PayFast</cite></footer>
+        </blockquote>
+    {% endif %}
 {% endblock %}
